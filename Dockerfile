@@ -6,8 +6,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt -y install xfce4
 RUN DEBIAN_FRONTEND=noninteractive apt -y install tigervnc-standalone-server
 RUN DEBIAN_FRONTEND=noninteractive apt -y install docker.io
 RUN DEBIAN_FRONTEND=noninteractive apt -y install supervisor
-RUN DEBIAN_FRONTEND=noninteractive apt -y install kali-desktop-core
-RUN DEBIAN_FRONTEND=noninteractive apt -y install kali-linux-default
 
 RUN mkdir -p /scripts
 ADD supervisor.conf.d/ /etc/supervisor/conf.d/
