@@ -6,7 +6,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt -y install xfce4
 RUN DEBIAN_FRONTEND=noninteractive apt -y install tigervnc-standalone-server
 RUN DEBIAN_FRONTEND=noninteractive apt -y install docker.io
 RUN DEBIAN_FRONTEND=noninteractive apt -y install supervisor
-RUN DEBIAN_FRONTEND=noninteractive apt -y install firefox zsh vim netcat-traditional
+RUN DEBIAN_FRONTEND=noninteractive apt -y install firefox-esr zsh vim netcat-traditional
 
 RUN chsh -s /bin/zsh
 
