@@ -30,5 +30,6 @@ RUN chsh -s /bin/bash
 RUN mkdir -p /scripts
 ADD supervisor.conf.d/ /etc/supervisor/conf.d/
 ADD launcher.sh /scripts/launcher.sh
+RUN touch /root/.ICEauthority && chown kali.kali /root/.ICEauthority
 
 ENTRYPOINT bash /scripts/launcher.sh
