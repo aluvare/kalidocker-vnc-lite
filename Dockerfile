@@ -31,6 +31,4 @@ RUN mkdir -p /scripts
 ADD supervisor.conf.d/ /etc/supervisor/conf.d/
 ADD launcher.sh /scripts/launcher.sh
 
-USER kali
-
 ENTRYPOINT bash /scripts/launcher.sh
