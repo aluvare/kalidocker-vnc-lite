@@ -32,7 +32,11 @@ ADD supervisor.conf.d/ /etc/supervisor/conf.d/
 ADD launcher.sh /scripts/launcher.sh
 RUN touch /root/.ICEauthority && chown kali.kali /root/.ICEauthority
 
-USER kali
 WORKDIR /home/kali
 
+ENV HOME=/home/kali \
+	SHELL=/bin/bash
+#HEALTHCHECK --interval=30s --timeout=5s CMD nc -vz 127.0.0.1 5900
+
+USER kali
 ENTRYPOINT sudo bash /scripts/launcher.sh
