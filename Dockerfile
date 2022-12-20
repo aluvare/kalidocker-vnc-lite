@@ -36,7 +36,9 @@ WORKDIR /home/kali
 
 ENV HOME=/home/kali \
 	SHELL=/bin/bash
-#HEALTHCHECK --interval=30s --timeout=5s CMD nc -vz 127.0.0.1 5900
+
+RUN sed -i "s/allowed_users*/allowed_users = anybody/g" /etc/X11/Xwrapper.config
+HEALTHCHECK --interval=30s --timeout=5s CMD nc -vz 127.0.0.1 5900
 
 USER kali
 ENTRYPOINT sudo bash /scripts/launcher.sh
