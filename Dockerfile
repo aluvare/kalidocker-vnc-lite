@@ -49,6 +49,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt -y install tigervnc-standalone-server
 RUN DEBIAN_FRONTEND=noninteractive apt -y install docker.io
 RUN DEBIAN_FRONTEND=noninteractive apt -y install supervisor jq curl
 RUN DEBIAN_FRONTEND=noninteractive apt -y install firefox-esr zsh vim netcat-traditional
+COPY --from=kali-amd64-builder /usr/bin/wireguard-go /usr/bin/wg* /usr/bin/
 
 FROM kalilinux/kali-last-release:arm64 AS kali-arm64
 
@@ -59,10 +60,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt -y install tigervnc-standalone-server
 RUN DEBIAN_FRONTEND=noninteractive apt -y install docker.io
 RUN DEBIAN_FRONTEND=noninteractive apt -y install supervisor jq curl
 RUN DEBIAN_FRONTEND=noninteractive apt -y install firefox-esr zsh vim netcat-traditional
+COPY --from=kali-arm64-builder /usr/bin/wireguard-go /usr/bin/wg* /usr/bin/
 
 FROM kali-${TARGETARCH} AS final
-
-COPY --from=kali-${TARGETARCH}-builder /usr/bin/wireguard-go /usr/bin/wg* /usr/bin/
 
 RUN adduser --disabled-password --gecos '' kali
 RUN usermod -a -G sudo,docker kali
