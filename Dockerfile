@@ -75,6 +75,8 @@ RUN mkdir -p /scripts /etc/wireguard
 ADD supervisor.conf.d/ /etc/supervisor/conf.d/
 ADD launcher.sh /scripts/launcher.sh
 RUN touch /root/.ICEauthority && chown kali.kali /root/.ICEauthority
+RUN sed -i "s/.*\"cpugraph\".*//g" /home/kali/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml && \
+	sed -i "s/.*\"power-manager-plugin\".*//g" /home/kali/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 
 WORKDIR /home/kali
 
