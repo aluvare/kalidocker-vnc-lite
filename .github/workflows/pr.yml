@@ -18,7 +18,7 @@ jobs:
         run: sudo find . -name . -o -prune -exec rm -rf -- {} +
 
       - name: Login to gh
-        run: git config --global url.https://nstrlabs:${{ secrets.ACTION_CLONE_TOKEN }}@github.com/.insteadOf https://github.com/
+        run: git config --global url.https://${{ env.ORGANIZATION }}:${{ secrets.ACTION_CLONE_TOKEN }}@github.com/.insteadOf https://github.com/
 
       - name: Checkout code
         uses: actions/checkout@v3
