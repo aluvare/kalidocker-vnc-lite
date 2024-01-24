@@ -1,0 +1,13 @@
+# Run on a schedule
+name: ghcr_package_cleanup
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'
+
+jobs:
+  package_cleanup_run:
+    uses: nstrlabs/gh-actions-reusable-workflows/.github/workflows/ghcr_package_cleanup.yml@main
+    with:
+      package_name: signalit-ops-shell
+    secrets: inherit
