@@ -1,4 +1,4 @@
-FROM kalilinux/kali-last-release:amd64 AS kali-amd64-builder
+FROM kalilinux/kali-last-release AS kali-builder
 RUN DEBIAN_FRONTEND=noninteractive apt update
 RUN DEBIAN_FRONTEND=noninteractive apt -y install golang-go make git
 
@@ -19,28 +19,7 @@ RUN git clone https://git.zx2c4.com/wireguard-tools && \
     make && \
     make install
 
-FROM kalilinux/kali-last-release:arm64 AS kali-arm64-builder
-RUN DEBIAN_FRONTEND=noninteractive apt update
-RUN DEBIAN_FRONTEND=noninteractive apt -y install golang-go make git
-
-ARG wg_go_tag=0.0.20220316
-ARG wg_tools_tag=v1.0.20210914
-
-RUN git clone https://git.zx2c4.com/wireguard-go && \
-    cd wireguard-go && \
-    git checkout $wg_go_tag && \
-    make && \
-    make install
-
-ENV WITH_WGQUICK=yes
-RUN git clone https://git.zx2c4.com/wireguard-tools && \
-    cd wireguard-tools && \
-    git checkout $wg_tools_tag && \
-    cd src && \
-    make && \
-    make install
-
-FROM kalilinux/kali-last-release:amd64 AS kali-amd64
+FROM kalilinux/kali-last-release AS kali
 
 RUN DEBIAN_FRONTEND=noninteractive apt update
 RUN DEBIAN_FRONTEND=noninteractive apt -y install kali-desktop-xfce sudo
@@ -49,20 +28,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt -y install tigervnc-standalone-server
 RUN DEBIAN_FRONTEND=noninteractive apt -y install docker.io
 RUN DEBIAN_FRONTEND=noninteractive apt -y install supervisor jq curl
 RUN DEBIAN_FRONTEND=noninteractive apt -y install firefox-esr zsh vim netcat-traditional dbus-x11
-COPY --from=kali-amd64-builder /usr/bin/wireguard-go /usr/bin/wg* /usr/bin/
+COPY --from=kali-builder /usr/bin/wireguard-go /usr/bin/wg* /usr/bin/
 
-FROM kalilinux/kali-last-release:arm64 AS kali-arm64
-
-RUN DEBIAN_FRONTEND=noninteractive apt update
-RUN DEBIAN_FRONTEND=noninteractive apt -y install kali-desktop-xfce sudo
-RUN DEBIAN_FRONTEND=noninteractive apt -y install xfce4 
-RUN DEBIAN_FRONTEND=noninteractive apt -y install tigervnc-standalone-server
-RUN DEBIAN_FRONTEND=noninteractive apt -y install docker.io
-RUN DEBIAN_FRONTEND=noninteractive apt -y install supervisor jq curl
-RUN DEBIAN_FRONTEND=noninteractive apt -y install firefox-esr zsh vim netcat-traditional dbus-x11
-COPY --from=kali-arm64-builder /usr/bin/wireguard-go /usr/bin/wg* /usr/bin/
-
-FROM kali-${TARGETARCH} AS final
+FROM kali AS final
 
 RUN adduser --disabled-password --gecos '' kali
 RUN usermod -a -G sudo,docker kali
